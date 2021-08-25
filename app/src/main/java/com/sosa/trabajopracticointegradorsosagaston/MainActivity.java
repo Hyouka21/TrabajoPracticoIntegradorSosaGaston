@@ -2,13 +2,43 @@ package com.sosa.trabajopracticointegradorsosagaston;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-
+    private UsbConectado usb ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.CALL_PHONE},1000);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        usb = new UsbConectado(this);
+        registerReceiver(usb, new IntentFilter("android.hardware.usb.action.USB_STATE"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(usb);
+
+    }
+    public void llamar(){
+       Intent llamada = new Intent(Intent.ACTION_CALL);
+        llamada.setData(Uri.parse("tel:911"));
+        startActivity(llamada);
     }
 }
