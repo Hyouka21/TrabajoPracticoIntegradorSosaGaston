@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        usb = new UsbConectado(this);
+        usb = new UsbConectado();
         registerReceiver(usb, new IntentFilter("android.hardware.usb.action.USB_STATE"));
     }
 
@@ -35,10 +35,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(usb);
 
-    }
-    public void llamar(){
-       Intent llamada = new Intent(Intent.ACTION_CALL);
-        llamada.setData(Uri.parse("tel:911"));
-        startActivity(llamada);
     }
 }

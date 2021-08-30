@@ -7,10 +7,10 @@ import android.net.Uri;
 import android.widget.Toast;
 
 public class UsbConectado extends BroadcastReceiver {
-    MainActivity mn ;
 
-    public UsbConectado(MainActivity mn) {
-        this.mn = mn;
+
+    public UsbConectado() {
+        ;
     }
 
     @Override
@@ -18,7 +18,9 @@ public class UsbConectado extends BroadcastReceiver {
 
         if(intent.getExtras().getBoolean("connected")) {
             Toast.makeText(context, "Entro usb", Toast.LENGTH_SHORT).show();
-            mn.llamar();
+            Intent llamada = new Intent(Intent.ACTION_CALL);
+            llamada.setData(Uri.parse("tel:911"));
+            context.startActivity(llamada);
         }
     }
 }
